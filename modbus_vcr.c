@@ -702,7 +702,7 @@ static void modbus_handle_request(struct packet_object *po){
 // 		// what should we do?
 // 		return;
 // 	}
-  while (1)
+  	while (1)
 	{
 	   if(session_get(&s, temp_s->ident, temp_s->ident_len) == -E_NOTFOUND){
 	      session_put(temp_s);

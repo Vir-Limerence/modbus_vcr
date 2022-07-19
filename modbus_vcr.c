@@ -708,7 +708,7 @@ static void modbus_handle_request(struct packet_object *po){
 		session_get(&s, temp_s->ident, temp_s->ident_len);
 		if(s!=NULL){
 			printf("--> Session found!\n");
-			continue;
+			break;
 		}
 	}
 	// if this is the first packet, we'll need to do this

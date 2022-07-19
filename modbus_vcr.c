@@ -704,14 +704,12 @@ static void modbus_handle_request(struct packet_object *po){
 // 	}
   	for(i=0;i<3;i++)
 	{
-	   if(session_get(&s, temp_s->ident, temp_s->ident_len) == -E_NOTFOUND){
-	      printf("--> Session not found :(\n");
-	      session_put(temp_s);
-	   }
-	   if(session_get(&s, temp_s->ident, temp_s->ident_len) == E_SUCCESS){
-	      printf("--> Session found!\n");
-	      break;
-	   }
+		session_put(temp_s);
+		session_get(&s, temp_s->ident, temp_s->ident_len);
+		if(s!=NULL){
+			printf("--> Session found!\n");
+			continue;
+		}
 	}
 	// if this is the first packet, we'll need to do this
 	// might consider kicking this out of the request handler and into session setup...
@@ -899,7 +897,6 @@ static void modbus_handle_request(struct packet_object *po){
 			} /* PACKET->DATA.len != 0 */
 		} /* else { // if (is_request(s, packet) */
 	} /* if ! (0 == g_done_recording) */
-	
 	printf("modbus_handle_request() exiting...\n");
 	// Should packet be automatically forwarded now?
 }

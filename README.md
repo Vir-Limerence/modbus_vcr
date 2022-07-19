@@ -8,8 +8,8 @@
 2. 修改配置文件
 ![image-20220710215300709](https://raw.githubusercontent.com/randomlifeme/clouding/master/img/image-20220710215300709.png)
 3. 编译源码
-使用main.sh
-首先chmod 777 main.sh，然后./main.sh执行，main.sh文件放到ettercap0.8.3.1主目录下
+ 使用main.sh
+ 首先chmod 777 main.sh，然后./main.sh执行，main.sh文件放到ettercap0.8.3.1主目录下
 # 关键说明
 modbus的协议识别是根据端口来的，所以如果端口不是默认的502端口，请修改
 插件使用命令

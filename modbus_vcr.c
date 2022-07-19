@@ -523,7 +523,7 @@ static int modbus_vcr_fini(void *modbus_vcr){
 }
 
 static int modbus_vcr_is_modbus(struct packet_object *po){
-    printf("modbus_vcr_is_modbus called\n");
+    //printf("modbus_vcr_is_modbus called\n");
 	if (po->L4.proto != NL_TYPE_TCP)
 		return 0;
 	if (ntohs(po->L4.dst) == (unsigned short) 502 || ntohs(po->L4.src) == (unsigned short) 502) // bug here, whoops
@@ -702,9 +702,10 @@ static void modbus_handle_request(struct packet_object *po){
 // 		// what should we do?
 // 		return;
 // 	}
-  	while (1)
+  	for(i=0;i<3;i++)
 	{
 	   if(session_get(&s, temp_s->ident, temp_s->ident_len) == -E_NOTFOUND){
+	      printf("--> Session not found :(\n");
 	      session_put(temp_s);
 	   }
 	   if(session_get(&s, temp_s->ident, temp_s->ident_len) == E_SUCCESS){
@@ -914,7 +915,7 @@ static void record_modbus(struct packet_object *po){
 		//printf("*******Non-modbus packet detected!*******\n");
 		return;
 	}else{
-        //printf("*******Modbus packet detected!*******\n");
+        printf("*******Modbus packet detected!*******\n");
     }
     // if it's a SYN packet, we need to set up a new session...
     //po->flags |= PO_DROPPED;  // NO, we don't want to drop the damn thing!

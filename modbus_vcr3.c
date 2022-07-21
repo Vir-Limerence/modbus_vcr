@@ -695,7 +695,7 @@ static int find_request_response_pair(struct request_response_item **output_requ
         // so start comparison at offset 4 (0-indexed)
         //
         if ((curr->mrrp.requestDataLen == requestlen) &&
-            memcmp(&(curr->mrrp.requestData)[4], &requestdata[4], requestlen - 4))
+            !memcmp(&(curr->mrrp.requestData)[4], &requestdata[4], requestlen - 4))
         {
             *output_request_response_item = curr;
             // printf("--> Find the response data pointer!");
@@ -716,7 +716,7 @@ static int find_response(struct request_response_item **output_request_response_
         // so start comparison at offset 4 (0-indexed)
         //
         if ((curr->mrrp.responseDataLen == responselen) &&
-            memcmp(&(curr->mrrp.responseData)[4], &responsedata[4], 4))
+            !memcmp(&(curr->mrrp.responseData)[4], &responsedata[4], 4))
         {
             *output_request_response_item = curr;
             // printf("--> Find the response data pointer!");
@@ -831,6 +831,11 @@ static void modbus_handle_request(struct packet_object *po)
             {
                 if (is_request(s, PACKET))
                 {
+                    if (find_request_response_pair(&((session_data_t *)s->data)->current_request_response_item, PACKET->DATA.data, PACKET->DATA.len, ((session_data_t *)s->data)->head_request_response_item))
+                    {
+                        return;
+                    }
+
                     printf("--> recording request\n");
                     SAFE_FREE(seq1);
                     SAFE_CALLOC(seq1, 2, sizeof(u_char));
@@ -933,6 +938,7 @@ static void modbus_handle_request(struct packet_object *po)
 
         if (is_request(s, PACKET))
         {
+            printf("Receive request data:\n");
             if (PACKET->DATA.len != 0)
             {
                 SAFE_FREE(seq1);
@@ -944,6 +950,7 @@ static void modbus_handle_request(struct packet_object *po)
         }
         else
         { /* is_request(s, PACKET) */
+            printf("Receiving response data:\n");
             if (PACKET->DATA.len != 0 && flag_1 && flag)
             {
                 flag = 0;
